@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { randomUUID } from 'crypto';
-import { CustomerAggregateRoot } from 'src/customer/domain/customer';
+import { CustomerAggregateRoot } from 'src/customer/domain/customer.aggregate';
 import { CreateCustomerCommand } from './create-customer.command';
 
 @CommandHandler(CreateCustomerCommand)
