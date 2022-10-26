@@ -15,14 +15,14 @@ export class FindCustomerById
   ) {}
 
   async execute(query: FindCustomerByIdQuery): Promise<FindCustomerByIdResult> {
-    try {
-      const customer = await this.customerQuery.findById(query.id);
-      if (JSON.stringify(customer) === '{}') {
-        throw new HttpException('cliente inexistente', HttpStatus.NOT_FOUND);
-      }
-      return customer;
-    } catch (e) {
-      throw new HttpException('cache indisponivel', HttpStatus.BAD_GATEWAY);
+    const customer = await this.customerQuery.findById(query.id);
+    if (JSON.stringify(customer) === '{}') {
+      throw new HttpException('cliente inexistente', HttpStatus.NOT_FOUND);
     }
+    return {
+      id: customer.id,
+      name: customer.name,
+      document: customer.document,
+    };
   }
 }
