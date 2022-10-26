@@ -16,6 +16,7 @@ import { CreateCustomerDTO } from './dto/create-customer.dto';
 import { UpdateCustomerParamDTO } from './dto/update-customer.param.dto';
 import { UpdateCustomerBodyDTO } from './dto/update-customer.body.dto';
 import { CustomerProperties } from '../domain/customer.aggregate';
+import { UpdateCustomerCommand } from '../application/command/update-customer.command';
 
 @Controller('customers')
 export class CustomersController {
@@ -41,10 +42,16 @@ export class CustomersController {
   }
 
   @Put(':id')
-  updateCustomer(
+  async updateCustomer(
     @Param() param: UpdateCustomerParamDTO,
     @Body() body: UpdateCustomerBodyDTO,
-  ): string {
-    return `This action updates a #${param.id} customer`;
+  ): Promise<CustomerProperties> {
+    const command = new UpdateCustomerCommand(
+      param.id,
+      body.id,
+      body.name,
+      body.document,
+    );
+    return await this.commandBus.execute(command);
   }
 }

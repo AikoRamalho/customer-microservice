@@ -1,7 +1,10 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { randomUUID } from 'crypto';
 import { CustomerProperties } from 'src/customer/domain/customer.aggregate';
-import { CustomerFactory } from 'src/customer/domain/customer.factory';
+import { CustomerRepository } from 'src/customer/domain/customer.interface';
+import { CustomerFactory } from 'src/customer/domain/factory';
+import { InjectionToken } from '../injection.token';
 import { CreateCustomerCommand } from './create-customer.command';
 
 @CommandHandler(CreateCustomerCommand)
@@ -9,21 +12,26 @@ export class CreateCustomerHandler
   implements ICommandHandler<CreateCustomerCommand>
 {
   constructor(
-    private readonly eventPublisher: EventPublisher,
+    @Inject(InjectionToken.CUSTOMER_REPOSITORY)
+    private readonly customerRepository: CustomerRepository,
     private readonly customerFactory: CustomerFactory,
+    private readonly eventPublisher: EventPublisher,
   ) {}
   async execute({
     name,
     document,
   }: CreateCustomerCommand): Promise<CustomerProperties> {
-    try {
-      const customer = this.eventPublisher.mergeObjectContext(
-        await this.customerFactory.create(name, document),
-      );
-      customer.commit();
-      return customer.getProperty();
-    } catch (e) {
-      throw new HttpException('cache indisponivel', HttpStatus.BAD_GATEWAY);
-    }
+    const id = randomUUID();
+
+    const aggregateCustomer = this.customerFactory.create(id, name, document);
+    aggregateCustomer.applyCustomerCreatedEvent();
+
+    const customer = this.eventPublisher.mergeObjectContext(aggregateCustomer);
+
+    await this.customerRepository.create(customer);
+
+    customer.commit();
+
+    return customer.getProperty();
   }
 }

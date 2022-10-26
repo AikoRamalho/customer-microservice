@@ -16,7 +16,7 @@ export class CustomerAggregateRoot extends AggregateRoot {
     super();
   }
 
-  createCustomerCreatedEvent(): CustomerAggregateRoot {
+  applyCustomerCreatedEvent(): CustomerAggregateRoot {
     this.apply(new CustomerCreatedEvent(this.id, this.name, this.document));
     return this;
   }
