@@ -1,9 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateCustomerDTO } from './dto/create-customer.dto';
 
 @Controller('customers')
 export class CustomersController {
-  @Get()
-  findAll(): string {
-    return 'This action returns all customers';
+  @Post()
+  createCustomer(@Body() customer: CreateCustomerDTO): string {
+    return '/customer post endpoint';
   }
 }
