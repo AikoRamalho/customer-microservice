@@ -1,4 +1,3 @@
-import { Inject } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CustomerFactory } from 'src/customer/domain/customer.factory';
 import { CreateCustomerCommand } from './create-customer.command';
@@ -8,7 +7,7 @@ export class CreateCustomerHandler
   implements ICommandHandler<CreateCustomerCommand>
 {
   constructor(
-    @Inject(EventPublisher) private readonly eventPublisher: EventPublisher,
+    private readonly eventPublisher: EventPublisher,
     private readonly customerFactory: CustomerFactory,
   ) {}
   async execute({ name, document }: CreateCustomerCommand): Promise<string> {
