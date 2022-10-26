@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CustomerFactory } from 'src/customer/domain/customer.factory';
 import { CreateCustomerCommand } from './create-customer.command';
@@ -11,10 +12,14 @@ export class CreateCustomerHandler
     private readonly customerFactory: CustomerFactory,
   ) {}
   async execute({ name, document }: CreateCustomerCommand): Promise<string> {
-    const customer = this.eventPublisher.mergeObjectContext(
-      this.customerFactory.create(name, document),
-    );
-    customer.commit();
-    return `Customer ${name} created`;
+    try {
+      const customer = this.eventPublisher.mergeObjectContext(
+        await this.customerFactory.create(name, document),
+      );
+      customer.commit();
+      return JSON.stringify(customer);
+    } catch (e) {
+      throw new HttpException('cache indisponivel', HttpStatus.BAD_GATEWAY);
+    }
   }
 }
