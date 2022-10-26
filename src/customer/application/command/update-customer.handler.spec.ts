@@ -43,5 +43,22 @@ describe('UpdatePasswordHandler', () => {
         new HttpException('conflito de ID', HttpStatus.CONFLICT),
       );
     });
+    it('should return 404 when customerNotFound', async () => {
+      const command = new UpdateCustomerCommand(
+        '6b157ad8-989f-4422-8701-6a0813f766a2',
+        '6b157ad8-989f-4422-8701-6a0813f766a3',
+        'new name',
+        123456789,
+      );
+      repository.checkIfNewIdAlreadyInUse = jest
+        .fn()
+        .mockReturnValueOnce(false);
+
+      repository.findById = jest.fn().mockReturnValueOnce({});
+
+      expect(handler.execute(command)).rejects.toThrow(
+        new HttpException('cliente inexistente', HttpStatus.NOT_FOUND),
+      );
+    });
   });
 });
