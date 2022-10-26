@@ -20,7 +20,6 @@ export class CreateCustomerHandler
     const customer = this.eventPublisher.mergeObjectContext(
       customerAggregate.createCustomer(),
     );
-    console.log('customer ', customer);
     customer.commit();
     return `Customer ${command.name} created`;
   }
