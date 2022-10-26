@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
-      exceptionFactory: () => new BadRequestException('cliente inexistente'),
+      exceptionFactory: () => new BadRequestException('request invalida'),
     }),
   );
   await app.listen(3000);
