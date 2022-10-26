@@ -15,6 +15,7 @@ import { FindCustomerByIdResponseDTO } from './dto/find-customer-by-id.response.
 import { CreateCustomerDTO } from './dto/create-customer.dto';
 import { UpdateCustomerParamDTO } from './dto/update-customer.param.dto';
 import { UpdateCustomerBodyDTO } from './dto/update-customer.body.dto';
+import { CustomerProperties } from '../domain/customer.aggregate';
 
 @Controller('customers')
 export class CustomersController {
@@ -32,7 +33,9 @@ export class CustomersController {
   }
 
   @Post()
-  async createCustomer(@Body() body: CreateCustomerDTO): Promise<string> {
+  async createCustomer(
+    @Body() body: CreateCustomerDTO,
+  ): Promise<CustomerProperties> {
     const command = new CreateCustomerCommand(body.name, body.document);
     return await this.commandBus.execute(command);
   }

@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { CustomerCreatedEvent } from './event/customer-created.event';
 
-interface CustomerProperties {
+export interface CustomerProperties {
   id: string;
   name: string;
   document: number;
