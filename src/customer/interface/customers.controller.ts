@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { isUUID } from 'class-validator';
-import { CreateCustomerCommand } from 'src/customer/application/command/create-customer.command';
+import { CreateCustomerCommand } from 'src/customer/application/command/create-customer/create-customer.command';
 import { FindCustomerByIdQuery } from '../application/query/find-customer-by-id.query';
 import { FindCustomerByIdResponseDTO } from './dto/find-customer-by-id.response.dto';
 import { CreateCustomerDTO } from './dto/create-customer.dto';
@@ -20,7 +20,7 @@ import { CustomerProperties } from '../domain/customer.aggregate';
 import { UpdateCustomerCommand } from '../application/command/update-customer.command';
 import { AuthenticationGuard } from '../auth/auth.guard';
 
-@UseGuards(AuthenticationGuard)
+// @UseGuards(AuthenticationGuard)
 @Controller('customers')
 export class CustomersController {
   constructor(readonly queryBus: QueryBus, readonly commandBus: CommandBus) {}

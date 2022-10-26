@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto';
 import { CustomerProperties } from 'src/customer/domain/customer.aggregate';
 import { CustomerRepository } from 'src/customer/domain/customer.interface';
 import { CustomerFactory } from 'src/customer/domain/factory';
-import { InjectionToken } from '../injection.token';
+import { InjectionToken } from '../../injection.token';
 import { CreateCustomerCommand } from './create-customer.command';
 
 @CommandHandler(CreateCustomerCommand)

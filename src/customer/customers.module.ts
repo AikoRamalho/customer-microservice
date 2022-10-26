@@ -1,6 +1,6 @@
 import { Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { CreateCustomerHandler } from 'src/customer/application/command/create-customer.handler';
+import { CreateCustomerHandler } from 'src/customer/application/command/create-customer/create-customer.handler';
 import { UpdateCustomerHandler } from './application/command/update-customer.handler';
 import { CustomerCreatedHandler } from './application/event/customer-created.handler';
 import { InjectionToken } from './application/injection.token';
