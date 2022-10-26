@@ -6,22 +6,25 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { isUUID } from 'class-validator';
 import { CreateCustomerCommand } from 'src/customer/application/command/create-customer.command';
+import { FindCustomerByIdQuery } from '../application/query/find-customer-by-id.query';
+import { FindCustomerByIdResponseDTO } from '../application/query/find-customer-by-id.response.dto';
 import { CreateCustomerDTO } from './dto/create-customer.dto';
 
 @Controller('customers')
 export class CustomersController {
-  constructor(readonly commandBus: CommandBus) {}
+  constructor(readonly queryBus: QueryBus, readonly commandBus: CommandBus) {}
   @Get(':id')
-  getCustomerById(@Param() param): string {
+  async getCustomerById(@Param() param): Promise<FindCustomerByIdResponseDTO> {
     // na documentacao do desafio eh pedido para nao retornar id invalido
     // mas sabemos que se o id n for uuid o cliente ja n existe
     if (!isUUID(param.id)) {
       throw new HttpException('cliente inexistente', 404);
     }
-    return param.id;
+    const query = new FindCustomerByIdQuery(param.id);
+    return await this.queryBus.execute(query);
   }
 
   @Post()
