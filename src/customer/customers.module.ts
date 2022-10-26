@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CreateCustomerHandler } from 'src/application/command/create-customer.handler';
 import { CustomersController } from './interface/customers.controller';
 
+const application = [CreateCustomerHandler];
+
 @Module({
-  imports: [],
+  imports: [CqrsModule],
   controllers: [CustomersController],
-  providers: [],
+  providers: [...application],
 })
 export class CustomersModule {}

@@ -7,8 +7,8 @@ import { CreateCustomerDTO } from './dto/create-customer.dto';
 export class CustomersController {
   constructor(readonly commandBus: CommandBus) {}
   @Post()
-  createCustomer(@Body() body: CreateCustomerDTO): string {
+  async createCustomer(@Body() body: CreateCustomerDTO): Promise<string> {
     const command = new CreateCustomerCommand(body.name, body.document);
-    return '/customer post endpoint';
+    return await this.commandBus.execute(command);
   }
 }
