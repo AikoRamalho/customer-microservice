@@ -5,6 +5,7 @@ import { UpdateCustomerHandler } from './application/command/update-customer.han
 import { CustomerCreatedHandler } from './application/event/customer-created.handler';
 import { InjectionToken } from './application/injection.token';
 import { FindCustomerById } from './application/query/find-customer-by-id.handler';
+import { AuthenticationModule } from './auth/auth.module';
 import { CustomerFactory } from './domain/factory';
 import { CustomerQueryRedisImplement } from './infra/query/customer.query';
 import { CustomerRepositoryRedis } from './infra/repository/customer.repository';
@@ -31,7 +32,7 @@ const application = [
 const domain = [CustomerFactory];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, AuthenticationModule],
   controllers: [CustomersController],
   providers: [...infra, ...application, ...domain],
 })

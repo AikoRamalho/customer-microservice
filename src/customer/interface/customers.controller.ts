@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { isUUID } from 'class-validator';
@@ -17,7 +18,9 @@ import { UpdateCustomerParamDTO } from './dto/update-customer.param.dto';
 import { UpdateCustomerBodyDTO } from './dto/update-customer.body.dto';
 import { CustomerProperties } from '../domain/customer.aggregate';
 import { UpdateCustomerCommand } from '../application/command/update-customer.command';
+import { AuthenticationGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthenticationGuard)
 @Controller('customers')
 export class CustomersController {
   constructor(readonly queryBus: QueryBus, readonly commandBus: CommandBus) {}
