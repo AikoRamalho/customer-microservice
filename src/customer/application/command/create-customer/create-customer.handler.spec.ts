@@ -57,4 +57,16 @@ describe('CreateCustomerHandler', () => {
       expect(repository.create).toBeCalledWith(customer);
     });
   });
+  it('should throws if document is not provided', async () => {
+    const command = new CreateCustomerCommand('name', undefined);
+    await expect(handler.execute(command)).rejects.toThrowError();
+  });
+  it('should throws if name is not provided', async () => {
+    const command = new CreateCustomerCommand(undefined, 2);
+    await expect(handler.execute(command)).rejects.toThrowError();
+  });
+  it('should throws if document is string', async () => {
+    const command = new CreateCustomerCommand('name', '2' as any);
+    await expect(handler.execute(command)).rejects.toThrowError();
+  });
 });
