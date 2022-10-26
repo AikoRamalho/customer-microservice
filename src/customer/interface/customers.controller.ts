@@ -13,7 +13,7 @@ import { CreateCustomerCommand } from 'src/customer/application/command/create-c
 import { FindCustomerByIdQuery } from '../application/query/find-customer-by-id.query';
 import { FindCustomerByIdResponseDTO } from './dto/find-customer-by-id.response.dto';
 import { CreateCustomerDTO } from './dto/create-customer.dto';
-import { UpdateCustomerParam } from './dto/update-customer.param.dto';
+import { UpdateCustomerParamDTO } from './dto/update-customer.param.dto';
 import { UpdateCustomerBodyDTO } from './dto/update-customer.body.dto';
 
 @Controller('customers')
@@ -39,7 +39,7 @@ export class CustomersController {
 
   @Put(':id')
   updateCustomer(
-    @Param() param: UpdateCustomerParam,
+    @Param() param: UpdateCustomerParamDTO,
     @Body() body: UpdateCustomerBodyDTO,
   ): string {
     return `This action updates a #${param.id} customer`;
