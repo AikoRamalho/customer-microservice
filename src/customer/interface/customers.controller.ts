@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateCustomerCommand } from 'src/application/command/create-customer.command';
+import { CreateCustomerCommand } from 'src/customer/application/command/create-customer.command';
 import { CreateCustomerDTO } from './dto/create-customer.dto';
 
 @Controller('customers')
