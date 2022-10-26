@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  HttpStatus,
-  ModuleMetadata,
-  Provider,
-} from '@nestjs/common';
+import { HttpStatus, ModuleMetadata, Provider } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { Test } from '@nestjs/testing';
 import { CustomerRepository } from 'src/customer/domain/customer.interface';
@@ -37,9 +32,11 @@ describe('UpdatePasswordHandler', () => {
         123456789,
       );
 
-      repository.checkIfNewIdAlreadyInUse = jest.fn().mockReturnValueOnce(true);
+      repository.checkIfNewIdAlreadyInUse = jest
+        .fn()
+        .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
 
-      expect(handler.execute(command)).rejects.toThrow(
+      await expect(handler.execute(command)).rejects.toThrow(
         new HttpException('conflito de ID', HttpStatus.CONFLICT),
       );
     });
@@ -52,11 +49,13 @@ describe('UpdatePasswordHandler', () => {
       );
       repository.checkIfNewIdAlreadyInUse = jest
         .fn()
-        .mockReturnValueOnce(false);
+        .mockReturnValueOnce(new Promise((resolve) => resolve(false)));
 
-      repository.findById = jest.fn().mockReturnValueOnce({});
+      repository.findById = jest
+        .fn()
+        .mockReturnValueOnce(new Promise((resolve) => resolve({})));
 
-      expect(handler.execute(command)).rejects.toThrow(
+      await expect(handler.execute(command)).rejects.toThrow(
         new HttpException('cliente inexistente', HttpStatus.NOT_FOUND),
       );
     });
