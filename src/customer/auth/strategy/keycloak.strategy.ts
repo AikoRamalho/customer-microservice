@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 
 import {
   AuthenticationStrategy,
@@ -18,20 +18,31 @@ export class KeycloakAuthenticationStrategy implements AuthenticationStrategy {
   }
 
   async authenticate(accessToken: string): Promise<KeycloakUserInfoResponse> {
-    try {
-      const url = `${this.baseURL}/realms/${this.realm}/protocol/openid-connect/userinfo`;
+    const url = `${this.baseURL}/realms/${this.realm}/protocol/openid-connect/userinfo`;
 
-      const response = await firstValueFrom(
-        this.httpService.get<KeycloakUserInfoResponse>(url, {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get<KeycloakUserInfoResponse>(url, {
           headers: {
             authorization: `Bearer ${accessToken}`,
           },
-        }),
-      );
+        })
+        .pipe(
+          catchError((error) => {
+            if (error.response?.data?.error === 'invalid_token') {
+              throw new HttpException(
+                'nao autorizado',
+                HttpStatus.UNAUTHORIZED,
+              );
+            }
+            throw new HttpException(
+              'sso nao disponivel',
+              HttpStatus.BAD_GATEWAY,
+            );
+          }),
+        ),
+    );
 
-      return response.data;
-    } catch (e) {
-      throw new HttpException('sso indisponivel', HttpStatus.BAD_GATEWAY);
-    }
+    return data;
   }
 }
