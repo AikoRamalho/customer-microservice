@@ -7,7 +7,7 @@ import {
 import { CustomerRepository } from 'src/customer/domain/customer.interface';
 
 export class CustomerRepositoryRedis implements CustomerRepository {
-  private static redis = new Redis();
+  private static redis = new Redis({ host: 'redis' });
 
   async create(customer: CustomerAggregateRoot): Promise<void> {
     try {
