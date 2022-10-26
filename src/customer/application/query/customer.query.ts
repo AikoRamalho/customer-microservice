@@ -5,5 +5,5 @@ export class Customer {
 }
 
 export interface CustomerQuery {
-  findById(id: string): Promise<Customer>;
+  findById(id: string): Promise<any>;
 }

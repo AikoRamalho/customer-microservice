@@ -6,7 +6,7 @@ import {
 export interface CustomerRepository {
   create(customer: CustomerAggregateRoot): Promise<void>;
   checkIfNewIdAlreadyInUse(id: string): Promise<boolean>;
-  findById(id: string): Promise<void>;
+  findById(id: string): Promise<any>;
   update(
     id: string,
     newId: string,
