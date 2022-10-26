@@ -10,7 +10,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { isUUID } from 'class-validator';
 import { CreateCustomerCommand } from 'src/customer/application/command/create-customer.command';
 import { FindCustomerByIdQuery } from '../application/query/find-customer-by-id.query';
-import { FindCustomerByIdResponseDTO } from '../application/query/find-customer-by-id.response.dto';
+import { FindCustomerByIdResponseDTO } from './dto/find-customer-by-id.response.dto';
 import { CreateCustomerDTO } from './dto/create-customer.dto';
 
 @Controller('customers')

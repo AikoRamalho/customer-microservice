@@ -1,4 +1,4 @@
-import { FindCustomerByIdResult } from './find-customer-by-id.result';
+import { FindCustomerByIdResult } from '../../application/query/find-customer-by-id.result';
 
 export class FindCustomerByIdResponseDTO extends FindCustomerByIdResult {
   readonly id: string;
