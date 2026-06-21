@@ -30,7 +30,7 @@
 * Interface Segregation Principle (ISP)
 * Dependency Inversion Principle (DIP)
 * Don't Repeat Yourself (DRY)
-* You Aren't Gonna Need It (YAGNI) (na medida do possível tendo em vista que é um desafio haha)
+* You Aren't Gonna Need It (YAGNI)
 * Keep It Simple, Silly (KISS)
 * Small Commits
 
